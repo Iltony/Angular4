@@ -12,6 +12,8 @@ import { FormsModule } from '@angular/forms'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 import { ApiService } from './api.service'
+import { AuthService } from './auth.service'
+
 import { AppComponent } from './app.component'
 import { MessagesComponent } from './messages.component'
 import { RegisterComponent } from './register.component'
@@ -40,7 +42,7 @@ const routes = [
     BrowserAnimationsModule,
     RouterModule.forRoot(routes) 
   ],
-  providers: [ApiService],
+  providers: [ApiService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

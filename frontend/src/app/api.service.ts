@@ -12,16 +12,4 @@ export class ApiService {
             this.message = res.json();
         })
     }
-
-    sendUserRegistration(registerData){ 
-        this.http.post('http://localhost:3000/register', registerData).subscribe(res => {
-
-        })
-    }
-
-    loginUser(loginData){ 
-        // this.http.post('http://localhost:3000/register', registerData).subscribe(res => {
-
-        // })
-    }
 }
