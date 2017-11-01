@@ -32,6 +32,7 @@ export class RegisterComponent {
   registerData = {}
 
   post() {
+    this.apiService.sendUserRegistration(this.registerData)
     console.log(this.registerData)
   }
 }
