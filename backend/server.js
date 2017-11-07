@@ -19,6 +19,22 @@ app.get('/posts', (req, res) => {
     res.send(posts)
 })
 
+app.get('/users', async (req, res) => {
+    try {
+
+        // TIP: when you pass an empty object to find, it returns all the users.
+        // TIP: if you pass the seccond parameter with the -symbol before a property name, it won't return the property in the result.
+        //BEFORE {"_id":"59f89682f94fe929242177ed","email":"a@a.a","pwd":"1","__v":0}
+        //AFTER  {"_id":"59f89682f94fe929242177ed","email":"a@a.a"}
+        var users = await User.find({}, '-pwd -__v')
+        res.send(users).status(200)
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(500)
+    }
+    res.send(posts)
+})
+
 app.post('/register', (req, res) => {
     var userData =  req.body;
     var user = new User(userData)
