@@ -9,7 +9,7 @@ export class AuthService {
 
     registerUser(registerData){ 
         this.http.post('http://localhost:3000/register', registerData).subscribe(res => {
-
+            console.log(registerData)
         })
     }
 
