@@ -7,6 +7,10 @@ var jwt = require('jwt-simple')
 var app = express()
 var User = require('./models/User.js')
 
+//To avoid (node:7676) DeprecationWarning: Mongoose: mpromise (mongoose's default promise library) is deprecated, plug in your own promise library instead: http://mongoosejs.com/docs/promises.html
+// indicates that the  promise used by mongoose will be the built in by ES6
+mongoose.Promise = Promise
+
 var posts = [
     {message: 'hello'}, 
     {message: 'hi'}
@@ -32,7 +36,17 @@ app.get('/users', async (req, res) => {
         console.log(error)
         res.sendStatus(500)
     }
-    res.send(posts)
+})
+
+
+app.get('/profile/:id', async (req, res) => {
+    try {
+        var user = await User.findById(req.params.id, '-pwd -__v')
+        res.send(user).status(200)
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(500)
+    }
 })
 
 app.post('/register', (req, res) => {

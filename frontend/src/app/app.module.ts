@@ -5,7 +5,8 @@ import { HttpModule } from '@angular/http'
 import { MatButtonModule, 
          MatCardModule, 
          MatToolbarModule, 
-         MatInputModule } from '@angular/material'
+         MatInputModule, 
+         MatListModule } from '@angular/material'
 
 import { FormsModule } from '@angular/forms'
 
@@ -19,12 +20,13 @@ import { MessagesComponent } from './messages.component'
 import { RegisterComponent } from './register.component'
 import { LoginComponent } from './login.component'
 import { UsersComponent } from './users.component'
+import { ProfileComponent } from './profile.component'
 
 const routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'users', component: UsersComponent },
-  { path: 'profile/:id', component: UsersComponent }
+  { path: 'profile/:id', component: ProfileComponent }
 ]
 
 @NgModule({
@@ -33,7 +35,8 @@ const routes = [
     MessagesComponent, 
     RegisterComponent,
     LoginComponent,
-    UsersComponent
+    UsersComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule, 
@@ -43,6 +46,7 @@ const routes = [
     MatCardModule, 
     MatToolbarModule, 
     MatInputModule,
+    MatListModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(routes) 
   ],
