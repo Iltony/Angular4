@@ -2,26 +2,39 @@ var express = require('express')
 var cors = require('cors')
 var bodyParser = require('body-parser')
 var mongoose = require('mongoose')
-var jwt = require('jwt-simple')
+var auth = require('./auth.js')
+var User = require('./models/User.js')
+var Post = require('./models/Post.js')
 
 var app = express()
-var User = require('./models/User.js')
-var bcrypt = require('bcrypt-nodejs')
 
 //To avoid (node:7676) DeprecationWarning: Mongoose: mpromise (mongoose's default promise library) is deprecated, plug in your own promise library instead: http://mongoosejs.com/docs/promises.html
 // indicates that the  promise used by mongoose will be the built in by ES6
 mongoose.Promise = Promise
 
-var posts = [
-    {message: 'hello'}, 
-    {message: 'hi'}
-];
-
 app.use(cors())
 app.use(bodyParser.json())
 
-app.get('/posts', (req, res) => {
+app.get('/posts/:id', async (req, res) => {
+    let author = req.params.id
+    let posts = await Post.find({author})
     res.send(posts)
+})
+
+app.post('/post', (req, res) => {
+    let postData = req.body
+
+    postData.author = '5a03d1f06fd31d0cb0cd57d3'
+    let post = new Post(postData)
+
+     post.save((err, result) => {
+        if(err){
+            console.error('saving post error')
+            return res.status(500).send({message: 'saving post error'})
+        }
+        
+        res.sendStatus(200)
+     })
 })
 
 app.get('/users', async (req, res) => {
@@ -50,36 +63,10 @@ app.get('/profile/:id', async (req, res) => {
     }
 })
 
-app.post('/register', (req, res) => {
-    var userData =  req.body;
-    var user = new User(userData)
-    user.save((err, result)=>{
-        if(err)
-            console.log('saving user error')
+// app.post('/register', auth.register)
+// app.post('/login', auth.login)
 
-        res.sendStatus(200)
-    })
-})
-
-app.post('/login', async (req, res) => {
-    var loginData =  req.body;
-
-    var user = await User.findOne({email: userData.email})
-
-    if (!user)
-        return res.sendStatus(401).send({message: 'Email or password invalid'})
-        
-    bcrypt.compare(loginData.pwd, user.pwd, (err, res) => {
-        if(!res)
-            return res.sendStatus(401).send({message: 'Email or password invalid'})
-    
-        var payload = {}
-        var token = jwt.encode(payload, '123')
-        
-        res.status(200).send({token})
-    })
-   
-})
+app.use('/auth', auth)
 
 mongoose.connect('mongodb://test:test@ds243345.mlab.com:43345/angular4database', { useMongoClient:true }, (err)=>{
     if(!err)
