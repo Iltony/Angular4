@@ -15,9 +15,9 @@ import { ActivatedRoute } from '@angular/router';
       </mat-card-header>
       <mat-card-content>
         <mat-list>
-          <mat-list-item>Name: Tim</mat-list-item>        
-          <mat-list-item>Name: {{profile?.email}}</mat-list-item>        
-          
+          <mat-list-item>Name: {{profile?.name}}</mat-list-item>        
+          <mat-list-item>Email: {{profile?.email}}</mat-list-item>        
+          <mat-list-item>Description: {{profile?.description}}</mat-list-item>        
         </mat-list>
       </mat-card-content>
     </mat-card>

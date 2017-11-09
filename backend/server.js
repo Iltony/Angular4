@@ -6,6 +6,7 @@ var jwt = require('jwt-simple')
 
 var app = express()
 var User = require('./models/User.js')
+var bcrypt = require('bcrypt-nodejs')
 
 //To avoid (node:7676) DeprecationWarning: Mongoose: mpromise (mongoose's default promise library) is deprecated, plug in your own promise library instead: http://mongoosejs.com/docs/promises.html
 // indicates that the  promise used by mongoose will be the built in by ES6
@@ -61,22 +62,23 @@ app.post('/register', (req, res) => {
 })
 
 app.post('/login', async (req, res) => {
-    var userData =  req.body;
+    var loginData =  req.body;
 
     var user = await User.findOne({email: userData.email})
 
     if (!user)
         return res.sendStatus(401).send({message: 'Email or password invalid'})
         
-    if (userData.pwd != user.pwd)
-        return res.sendStatus(401).send({message: 'Email or password invalid'})
-    var payload = {}
-    var token = jwt.encode(payload, '123')
-
-
-    // console.log(token)
+    bcrypt.compare(loginData.pwd, user.pwd, (err, res) => {
+        if(!res)
+            return res.sendStatus(401).send({message: 'Email or password invalid'})
     
-    res.status(200).send({token})
+        var payload = {}
+        var token = jwt.encode(payload, '123')
+        
+        res.status(200).send({token})
+    })
+   
 })
 
 mongoose.connect('mongodb://test:test@ds243345.mlab.com:43345/angular4database', { useMongoClient:true }, (err)=>{
