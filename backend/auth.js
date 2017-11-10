@@ -8,11 +8,12 @@ var router = express.Router()
 router.post('/register', (req, res) => {
     var userData =  req.body;
     var user = new User(userData)
-    user.save((err, result) => {
-        if(err)
-            console.log('saving user error')
 
-        res.sendStatus(200)
+    user.save((err, newUser) => {
+        if(err)
+            return res.sendStatus(500).send({message: 'Error saving user'})
+
+        createSendToken(res, newUser)
     })
 })
 
@@ -28,12 +29,16 @@ router.post('/login', async (req, res) => {
         if(!isMatch)
             return res.sendStatus(401).send({message: 'Email or password invalid'})
     
-        var payload = { sub: user._id }
-        var token = jwt.encode(payload, '123')
-        
-        res.status(200).send({token})
+        createSendToken(res, user)
     })
 })
+
+function createSendToken(res, user){
+    var payload = { sub: user._id }
+    var token = jwt.encode(payload, '123')
+    
+    res.status(200).send({token})
+}
 
 var auth = {
     router, 
