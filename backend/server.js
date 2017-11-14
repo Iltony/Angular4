@@ -73,4 +73,4 @@ mongoose.connect('mongodb://test:test@ds243345.mlab.com:43345/angular4database',
         console.log('connected to mongo')
 })
 
-app.listen(3000)
+app.listen(process.env.PORT || 3000)
