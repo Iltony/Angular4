@@ -34,8 +34,11 @@ app.post('/post', auth.checkAuthenthicated, (req, res) => {
             return res.status(500).send({message: 'saving post error'})
         }
         
-        res.sendStatus(200)
-     })
+        // using this sentence (res.sendStatus(200)) mongoose gives an error that indicates: cannot set headers after the key is sent
+        // see the following issue https://stackoverflow.com/questions/27512846/routes-error-error-cant-set-headers-after-they-are-sent
+        // res.sendStatus(200)
+        res.json({ status: 200});
+    })
 })
 
 app.get('/users', async (req, res) => {
