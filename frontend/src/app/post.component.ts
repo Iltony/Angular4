@@ -15,9 +15,9 @@ import { ApiService } from './api.service';
   </mat-card-header>
   <mat-card-content>
     <form>
-      <mat-input-container style="width: 100%;">
+      <mat-form-field style="width: 100%;">
         <textarea [(ngModel)]="postMsg" name="msg" matInput placeholder="Post message"></textarea>
-      </mat-input-container>
+      </mat-form-field>
       <br>
       <button (click)="post()" mat-raised-button color="primary">Post</button>
       </form>

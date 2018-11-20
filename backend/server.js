@@ -71,7 +71,7 @@ app.get('/profile/:id', async (req, res) => {
 
 app.use('/auth', auth.router)
 
-mongoose.connect('mongodb://test:test@ds243345.mlab.com:43345/angular4database', { useMongoClient:true }, (err)=>{
+mongoose.connect('mongodb://test:test@ds243345.mlab.com:43345/angular4database', (err)=>{
     if(!err)
         console.log('connected to mongo')
 })

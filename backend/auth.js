@@ -43,14 +43,14 @@ function createSendToken(res, user){
 var auth = {
     router, 
     checkAuthenthicated : (req, res, next) => {
-        if(!req.header('authorization'))
+        if(!req.header('authorization') || req.header('authorization') === "token null")
             return res.status(401).send({ message: 'Unauthorized. Missing Auth Header'})
     
         // takes the token that comes 'Token tokenValue'
         var token = req.header('authorization').split(' ')[1]
         var payload = jwt.decode(token, '123')
     
-        if (!payload)
+        if (!payload) 
             return res.status(401).send({ message: 'Unauthorized. Auth Header Invalid'})
         req.userId = payload.sub
     
